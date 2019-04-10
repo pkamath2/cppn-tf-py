@@ -9,7 +9,7 @@ import os
 import pickle
 import numpy as np
 import tensorflow as tf
-from . import dft
+# from . import dft
 from .utils import download_and_extract_tar
 
 
@@ -116,53 +116,53 @@ def gtzan_music_speech_download(dst='gtzan_music_speech'):
     download_and_extract_tar(path, dst)
 
 
-def gtzan_music_speech_load(dst='gtzan_music_speech'):
-    """Load the GTZAN Music and Speech dataset.
+# def gtzan_music_speech_load(dst='gtzan_music_speech'):
+#     """Load the GTZAN Music and Speech dataset.
 
-    Downloads the dataset if it does not exist into the dst directory.
+#     Downloads the dataset if it does not exist into the dst directory.
 
-    Parameters
-    ----------
-    dst : str, optional
-        Location of GTZAN Music and Speech dataset.
+#     Parameters
+#     ----------
+#     dst : str, optional
+#         Location of GTZAN Music and Speech dataset.
 
-    Returns
-    -------
-    Xs, ys : np.ndarray, np.ndarray
-        Array of data, Array of labels
-    """
-    from scipy.io import wavfile
+#     Returns
+#     -------
+#     Xs, ys : np.ndarray, np.ndarray
+#         Array of data, Array of labels
+#     """
+#     from scipy.io import wavfile
 
-    if not os.path.exists(dst):
-        gtzan_music_speech_download(dst)
-    music_dir = os.path.join(os.path.join(dst, 'music_speech'), 'music_wav')
-    music = [os.path.join(music_dir, file_i)
-             for file_i in os.listdir(music_dir)
-             if file_i.endswith('.wav')]
-    speech_dir = os.path.join(os.path.join(dst, 'music_speech'), 'speech_wav')
-    speech = [os.path.join(speech_dir, file_i)
-              for file_i in os.listdir(speech_dir)
-              if file_i.endswith('.wav')]
-    Xs = []
-    ys = []
-    for i in music:
-        sr, s = wavfile.read(i)
-        s = s / 16384.0 - 1.0
-        re, im = dft.dft_np(s)
-        mag, phs = dft.ztoc(re, im)
-        Xs.append((mag, phs))
-        ys.append(0)
-    for i in speech:
-        sr, s = wavfile.read(i)
-        s = s / 16384.0 - 1.0
-        re, im = dft.dft_np(s)
-        mag, phs = dft.ztoc(re, im)
-        Xs.append((mag, phs))
-        ys.append(1)
-    Xs = np.array(Xs)
-    Xs = np.transpose(Xs, [0, 2, 3, 1])
-    ys = np.array(ys)
-    return Xs, ys
+#     if not os.path.exists(dst):
+#         gtzan_music_speech_download(dst)
+#     music_dir = os.path.join(os.path.join(dst, 'music_speech'), 'music_wav')
+#     music = [os.path.join(music_dir, file_i)
+#              for file_i in os.listdir(music_dir)
+#              if file_i.endswith('.wav')]
+#     speech_dir = os.path.join(os.path.join(dst, 'music_speech'), 'speech_wav')
+#     speech = [os.path.join(speech_dir, file_i)
+#               for file_i in os.listdir(speech_dir)
+#               if file_i.endswith('.wav')]
+#     Xs = []
+#     ys = []
+#     for i in music:
+#         sr, s = wavfile.read(i)
+#         s = s / 16384.0 - 1.0
+#         re, im = dft.dft_np(s)
+#         mag, phs = dft.ztoc(re, im)
+#         Xs.append((mag, phs))
+#         ys.append(0)
+#     for i in speech:
+#         sr, s = wavfile.read(i)
+#         s = s / 16384.0 - 1.0
+#         re, im = dft.dft_np(s)
+#         mag, phs = dft.ztoc(re, im)
+#         Xs.append((mag, phs))
+#         ys.append(1)
+#     Xs = np.array(Xs)
+#     Xs = np.transpose(Xs, [0, 2, 3, 1])
+#     ys = np.array(ys)
+#     return Xs, ys
 
 
 def cifar10_download(dst='cifar10'):
